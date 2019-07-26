@@ -1,0 +1,41 @@
+
+
+server:
+  port: 8072
+spring:
+  application:
+    name: authentication_service
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:33060/homestead
+    username: homestead
+    password: secret
+    tomcat:
+      test-while-idle: true
+      validation-query: SELECT 1
+    initialization-mode: never
+    platform: mysql
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      ddl-auto: validate
+    show-sql: true
+
+#eureka:
+#  instance:
+#    hostname: localhost
+#    port: 8070
+#  client:
+#    serviceUrl:
+#      defaultZone: http://${eureka.instance.hostname}:${eureka.instance.port}/eureka/
+logging:
+  level:
+    org:
+      springframework:
+        security=DEBUG:
+
+check-user-scopes: false
