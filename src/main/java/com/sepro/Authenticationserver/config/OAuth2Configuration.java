@@ -1,6 +1,7 @@
 package com.sepro.Authenticationserver.config;
 
 
+import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.DatabasePopulator;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,10 +24,13 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.OAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpointAuthenticationFilter;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
+import org.springframework.core.io.Resource;
 
 import javax.sql.DataSource;
 
@@ -34,6 +41,12 @@ public class OAuth2Configuration extends AuthorizationServerConfigurerAdapter {
 
     @Value("${check-user-scopes}")
     private Boolean checkUserScopes;
+
+    @Value("classpath:schema.sql")
+    private Resource schemaScript;
+
+    @Value("classpath:data.sql")
+    private Resource dataScript;
 
     @Autowired
     private DataSource dataSource;
@@ -60,7 +73,7 @@ public class OAuth2Configuration extends AuthorizationServerConfigurerAdapter {
 
     @Bean(name="myTokenstore")
     public TokenStore tokenStore() {
-        return new JwtTokenStore(jwtAccessTokenConverter());
+        return new JdbcTokenStore(dataSource);
     }
 
     @Bean
@@ -70,6 +83,28 @@ public class OAuth2Configuration extends AuthorizationServerConfigurerAdapter {
         return converter;
     }
 
+    @Bean
+    public DefaultTokenServices tokenServices(){
+        final DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+        defaultTokenServices.setTokenStore(tokenStore());
+        defaultTokenServices.setSupportRefreshToken(true);
+        return defaultTokenServices;
+    }
+
+    @Bean
+    public DataSourceInitializer dataSourceInitializer(final DataSource dataSource) {
+        final DataSourceInitializer initializer = new DataSourceInitializer();
+        initializer.setDataSource(dataSource);
+        initializer.setDatabasePopulator(databasePopulator());
+        return initializer;
+    }
+
+    private DatabasePopulator databasePopulator() {
+        final ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
+        populator.addScript(schemaScript);
+        populator.addScript(dataScript);
+        return populator;
+    }
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.jdbc(dataSource).passwordEncoder(passwordEncoder);

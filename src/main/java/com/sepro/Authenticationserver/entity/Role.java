@@ -1,13 +1,15 @@
 package com.sepro.Authenticationserver.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 
 @Entity
 @Table(name = "ROLE")
-public class Role extends BaseIdEntity{
 
+public class Role extends BaseIdEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String name;
 
     @ManyToMany(fetch = FetchType.EAGER)

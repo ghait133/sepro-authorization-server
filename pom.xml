@@ -82,13 +82,18 @@
 				</includes>
 				<excludes>
 					<exclude>**/*.jks</exclude>
+					<exclude>**/*.sql</exclude>
+
 				</excludes>
+
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>false</filtering>
 				<includes>
 					<include>**/*.jks</include>
+					<include>**/*.sql</include>
+
 				</includes>
 				<excludes>
 					<exclude>**/*.yml</exclude>
