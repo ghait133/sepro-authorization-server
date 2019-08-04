@@ -73,6 +73,7 @@
 	</dependencyManagement>
 
 	<build>
+		<defaultGoal>package</defaultGoal>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>

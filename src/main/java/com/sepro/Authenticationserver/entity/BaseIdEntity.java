@@ -8,5 +8,5 @@ public class BaseIdEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    protected int id;
+    protected Long id;
 }
