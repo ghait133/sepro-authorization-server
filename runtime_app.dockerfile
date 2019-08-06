@@ -19,3 +19,4 @@ COPY --from=ghait133/authorization-server-builder:latest /build/target/*.jar app
 ENTRYPOINT [ "sh", "-c", "java -Djava.security.egd=file:/dev/./urandom -jar app.jar" ]
 #Second option using shell form:
 #ENTRYPOINT exec java $JAVA_OPTS -jar app.jar $0 $@
+#CMD tail -f /dev/null

@@ -61,3 +61,80 @@ create table if not exists ClientDetails (
   additionalInformation VARCHAR(4096),
   autoApproveScopes VARCHAR(255)
 );
+
+
+
+
+-- CREATE TABLE permission (
+-- id BIGINT PRIMARY KEY AUTO_INCREMENT,
+-- NAME VARCHAR(60) UNIQUE KEY);
+--
+-- INSERT INTO permission (NAME) VALUES
+-- ('can_create_user'),
+-- ('can_update_user'),
+-- ('can_read_user'),
+-- ('can_delete_user');
+--
+--
+--
+-- 		CREATE TABLE role
+-- 		(id BIGINT PRIMARY KEY AUTO_INCREMENT,
+-- 		NAME VARCHAR(60) UNIQUE KEY);
+--
+--
+-- 		INSERT INTO role (NAME) VALUES
+-- 		('role_admin'),('role_user');
+--
+--
+--
+--
+-- 	CREATE TABLE permission_role(
+--     permission_id BIGINT,
+--     FOREIGN KEY(permission_id) REFERENCES permission(id),
+--     role_id BIGINT,
+--     FOREIGN KEY(role_id) REFERENCES role(id));
+--
+--     INSERT INTO permission_role (permission_id, role_id) VALUES
+--     (1,1), /* can_create_user assigned to role_admin */
+--     (2,1), /* can_update_user assigned to role_admin */
+--     (3,1), /* can_read_user assigned to role_admin */
+--     (4,1), /* can_delete_user assigned to role_admin */
+--
+--     (3,2);  /* can_read_user assigned to role_user */
+--
+--
+--
+--
+--
+-- 	CREATE TABLE user (
+--     id BIGINT PRIMARY KEY AUTO_INCREMENT,
+--     username VARCHAR(24) UNIQUE KEY NOT NULL,
+--     PASSWORD VARCHAR(255) NOT NULL,
+--     email VARCHAR(255) NOT NULL,
+--     enabled BIT(1) NOT NULL,
+--     account_expired BIT(1) NOT NULL,
+--     credentials_expired BIT(1) NOT NULL,
+--     account_locked BIT(1) NOT NULL);
+--
+--
+--
+--
+--
+-- 	INSERT INTO user (
+--     username,PASSWORD,
+--     email,enabled,account_expired,credentials_expired,account_locked) VALUES (
+--     'admin','{bcrypt}$2a$10$EOs8VROb14e7ZnydvXECA.4LoIhPOoFHKvVF/iBZ/ker17Eocz4Vi',
+--     'william@gmail.com',1,0,0,0),
+--     ('user','{bcrypt}$2a$10$EOs8VROb14e7ZnydvXECA.4LoIhPOoFHKvVF/iBZ/ker17Eocz4Vi',
+--     'john@gmail.com',1,0,0,0);
+--
+--
+--
+-- 	CREATE TABLE role_user (role_id BIGINT,FOREIGN KEY(role_id) REFERENCES role(id),
+--     user_id BIGINT, FOREIGN KEY(user_id) REFERENCES user(id));
+--
+--
+--     INSERT INTO role_user (role_id, user_id)
+--     VALUES
+--     (1, 1) /* role_admin assigned to admin user */,
+--     (2, 2) /* role_user assigned to user user */ ;

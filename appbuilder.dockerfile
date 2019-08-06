@@ -13,5 +13,7 @@ RUN mvn -B dependency:resolve dependency:resolve-plugins
 COPY src /build/src
 # Build application
 RUN mvn clean
-RUN mvn install -Dmaven.test.skip=true
-RUN mvn package -Dmaven.test.skip=true
+RUN mvn install
+RUN mvn package
+
+CMD tail -f /dev/null
